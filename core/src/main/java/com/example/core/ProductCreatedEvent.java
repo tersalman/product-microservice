@@ -1,18 +1,19 @@
-package com.example.product_microservice_kafka.service.dto;
-
-import lombok.*;
-import org.springframework.stereotype.Component;
+package com.example.core;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class CreatedProductDto {
-
+public class ProductCreatedEvent {
+    private String productId;
     private String title;
     private BigDecimal price;
     private Integer quantity;
 
-    public CreatedProductDto(String title, BigDecimal price, Integer quantity) {
+    public ProductCreatedEvent() {
+    }
+
+    public ProductCreatedEvent(String productId, String title, BigDecimal price, Integer quantity) {
+        this.productId = productId;
         this.title = title;
         this.price = price;
         this.quantity = quantity;
@@ -20,8 +21,9 @@ public class CreatedProductDto {
 
     @Override
     public String toString() {
-        return "CreatedProductDto{" +
-                "title='" + title + '\'' +
+        return "ProductCreatedEvent{" +
+                "productId='" + productId + '\'' +
+                ", title='" + title + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
@@ -31,13 +33,21 @@ public class CreatedProductDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CreatedProductDto that = (CreatedProductDto) o;
-        return Objects.equals(title, that.title) && Objects.equals(price, that.price) && Objects.equals(quantity, that.quantity);
+        ProductCreatedEvent that = (ProductCreatedEvent) o;
+        return Objects.equals(productId, that.productId) && Objects.equals(title, that.title) && Objects.equals(price, that.price) && Objects.equals(quantity, that.quantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, price, quantity);
+        return Objects.hash(productId, title, price, quantity);
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getTitle() {

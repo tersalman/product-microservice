@@ -1,13 +1,13 @@
-package com.example.product_microservice_kafka;
+package com.example.email_notification_microservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProductMicroserviceKafkaApplication {
+public class EmailNotificationMicroserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProductMicroserviceKafkaApplication.class, args);
+		SpringApplication.run(EmailNotificationMicroserviceApplication.class, args);
 	}
 
 }
