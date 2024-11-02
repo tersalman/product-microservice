@@ -1,5 +1,7 @@
 package com.example.email_notification_microservice.config;
 
+import com.example.email_notification_microservice.exception.NonRetryableException;
+import com.example.email_notification_microservice.exception.RetryableException;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.protocol.types.Field;
@@ -16,6 +18,7 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +50,11 @@ public class KafkaConfig {
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
             ConsumerFactory<String, Object> consumerFactory, KafkaTemplate kafkaTemplate) {
-        DefaultErrorHandler defaultErrorHandler = new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate));
+        DefaultErrorHandler defaultErrorHandler = new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate),
+                new FixedBackOff(3000, 3));
+
+        defaultErrorHandler.addNotRetryableExceptions(NonRetryableException.class);
+        defaultErrorHandler.addNotRetryableExceptions(RetryableException.class);
 
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);

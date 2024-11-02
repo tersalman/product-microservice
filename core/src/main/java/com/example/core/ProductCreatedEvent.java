@@ -10,6 +10,7 @@ public class ProductCreatedEvent {
     private Integer quantity;
 
     public ProductCreatedEvent() {
+
     }
 
     public ProductCreatedEvent(String productId, String title, BigDecimal price, Integer quantity) {
